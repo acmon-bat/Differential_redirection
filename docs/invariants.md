@@ -15,7 +15,7 @@ Every pull request should be checked against this list.
 | I-5 | **Optional online features are explicit and consent-based.** | They start only after a deliberate user action, after a plain-language disclosure of exactly what will be sent and to whom. Consent is specific to the feature and revocable. Plaster never auto-triggers them or re-prompts persistently. |
 | I-6 | **Minimum browser permissions.** | Each permission is justified in `docs/architecture.md` (permissions table, to be added in Phase 2). Prefer optional and runtime-granted permissions over install-time ones. |
 | I-7 | **Do not claim to observe what browser APIs cannot reliably expose.** | Capabilities are documented per browser in a capability matrix. When a signal is unavailable, the UI says "not observable in this browser", never "none found". |
-| I-8 | **Missing evidence is not proof of good privacy.** | Unknown values never raise a score. They lower confidence and are shown to the user. |
+| I-8 | **Missing evidence is not proof of good privacy.** | Missing (unknown) evidence is never credited as positive. It lowers evidence quality and confidence, and is shown to the user. **No grade is shown unless the Tracking category is assessed and at least 75% of the applicable category weight is scored**; the only exception is an F cap from an observed insecure password or payment field. Plaster does **not** claim that removing unknown evidence can never increase the underlying numerical score: excluding a minor unscored category can shift it (methodology 0.3.0 §1.6). *Wording approved by the owner, 2026-11-25 (Q-6).* |
 | I-9 | **Evidence, scoring and recommendations are explainable.** | Every score component and recommendation links to the evidence and the rule that produced it. The methodology is versioned. |
 | I-10 | **Document every component that can make an external network request.** | Every such component is listed in [`network-egress-register.md`](network-egress-register.md). Code that isn't listed must not do network I/O. |
 
@@ -30,7 +30,7 @@ These follow from the invariants and are enforced the same way.
 - **S-5: The core engine is network-incapable by construction.** `packages/core` has no access to `fetch`, `XMLHttpRequest`, `WebSocket`, `navigator.sendBeacon`, DOM or Node network types (see the enforcement section in `architecture.md`).
 - **S-6: Untrusted input.** All page-derived data is treated as hostile. It is never rendered as HTML, and it is validated and size-bounded before entering the engine.
 - **S-7: Honest language.** User-facing text says "appears", "observed" or "the site states". It doesn't present inferences as facts about a site's real behaviour.
-- **S-8: Differential privacy and other privacy-enhancing technologies are never inferred from vague wording** such as "anonymised" or "aggregated". See `scoring-methodology.md` §7.
+- **S-8: Differential privacy and other privacy-enhancing technologies are never inferred from vague wording** such as "anonymised" or "aggregated". See `scoring-methodology.md` Part 2, D7 (evidence ladder); in 0.3.0 PET claims have no score effect (§1.4).
 
 ## Enforcement (planned)
 

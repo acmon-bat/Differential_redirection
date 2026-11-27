@@ -1,6 +1,43 @@
 # Architecture Overview
 
-**Status:** Proposal for discussion. Items marked **[D-n]** are open decisions (see `open-decisions.md`).
+**Status:** Sections 1–9 are the target architecture. Items marked **[D-n]** are open decisions (see `open-decisions.md`). **Section 0 describes what is implemented in v0.1.0.**
+
+## 0. Implementation status (v0.1.0)
+
+| Component | Location | Status |
+|---|---|---|
+| Evidence model, types, validation | `packages/core/src/{types,evidence,validate,domains}.ts` | **Implemented** |
+| Normalisation (snapshot → derived facts) | `packages/core/src/context.ts` | **Implemented** |
+| Scoring (18 checks, 6 categories, caps, confidence) | `packages/core/src/{checks,scoring}.ts` | **Implemented**, uncalibrated |
+| Personal-information guidance | `packages/core/src/guidance.ts` | **Implemented** |
+| Field classification (structure only) | `packages/core/src/fields.ts` | **Implemented** |
+| PET/DP disclosure detection (informational) | `packages/core/src/disclosures.ts` | **Implemented**, keyword heuristics |
+| Local knowledge base | `packages/knowledge` | **Partial**: ~40-domain hand-curated seed, public-suffix subset |
+| Chromium extension (activeTab tier) | `apps/extension` | **Implemented**: popup, collector, capability profile |
+| Enhanced observation (optional `webRequest` tier) | — | **Planned** |
+| Firefox adapter | — | **Planned** |
+| Local alternative matching | — | **Planned** |
+| Optional online discovery (`packages/discovery`) | — | **Planned**; package not created, so there is no network code anywhere |
+| Persisted history | — | **Not planned for MVP**: nothing is stored (D-10) |
+
+**Actual data flow (v0.1.0):**
+
+```
+user clicks toolbar button  ──grants activeTab──▶  popup.ts
+popup ──chrome.scripting.executeScript──▶ collector.js (isolated world, main frame)
+collector ──value-free ObservationSnapshot──▶ popup
+popup: validateSnapshot() ─▶ assessSnapshot(snapshot, knowledgeBase) ─▶ render()
+                                   (pure TypeScript, no I/O)
+popup closes ──▶ everything is discarded
+```
+
+There is no background service worker, no messaging surface, no storage and no network code. The extension CSP (`default-src 'none'; connect-src 'none'`) blocks requests from extension pages even if code regressed.
+
+**Deviations from the proposal below (pending owner approval; see `open-decisions.md`):**
+- npm with a single root `package.json`, not pnpm workspaces. Packages are directories with their own `tsconfig.json`, imported by relative path.
+- `node:test` with Node's built-in TypeScript type stripping, not Vitest.
+- Chromium only.
+- `CapabilityProfile` statuses are `available | partial | unavailable | not-permitted`, declared per adapter.
 
 ## 1. Goals that shape the architecture
 
@@ -87,7 +124,7 @@ interface CapabilityProfile {    // declared by each browser adapter
 
 interface Assessment {
   subject: string;
-  methodologyVersion: string;    // e.g. "0.1.0"
+  methodologyVersion: string;    // e.g. "0.3.0"
   knowledgeVersion: string;
   engineVersion: string;
   score?: number;                // 0–100; may be withheld at low confidence [D-13]

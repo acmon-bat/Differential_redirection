@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "page": { "origin": "https://www.example.co.uk" },
+  "capabilities": {
+    "adapter": "chromium-mv3-activetab",
+    "signals": { "subresourceHosts": "partial", "documentHeaders": "partial", "cookies": "unavailable", "forms": "available", "pageLinks": "available", "disclosures": "unavailable", "fingerprintingApis": "unavailable" },
+    "limitations": ["HTTP response headers are not visible; only <meta> equivalents can be detected."]
+  },
+  "window": { "coversPageLoad": true, "durationMs": 4000 },
+  "subresources": [
+    { "host": "www.example.co.uk", "scheme": "https", "kind": "script", "count": 3 },
+    { "host": "cdn.example.co.uk", "scheme": "https", "kind": "image", "count": 8 }
+  ],
+  "documentHeaders": { "strictTransportSecurity": null, "contentSecurityPolicy": true, "referrerPolicy": "strict-origin-when-cross-origin", "permissionsPolicy": null },
+  "forms": [{ "actionOrigin": "https://www.example.co.uk", "method": "post", "fieldKinds": ["email"] }],
+  "pageLinks": { "privacyPolicyLink": true }
+}

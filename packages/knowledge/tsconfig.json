@@ -1,0 +1,9 @@
+{
+  // Knowledge is data plus pure lookups: same restrictions as core.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": []
+  },
+  "include": ["src/**/*.ts"]
+}

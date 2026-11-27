@@ -8,7 +8,7 @@
 
 | Component | Package | Trigger | Destination | Data sent | Consent | Status |
 |---|---|---|---|---|---|---|
-| *(none)* | | | | | | Nothing is implemented yet |
+| *(none)* | | | | | | v0.1.0 contains no network code. Enforced by `tests/security/static.test.ts` and verified at runtime by `tests/integration/extension.test.mjs` |
 
 **Planned (not approved, needs design; see `open-decisions.md`):**
 
@@ -30,3 +30,5 @@ Build scripts (for example, downloading tracker lists to bundle into a release) 
 | Script | Destination | Purpose |
 |---|---|---|
 | *(none yet)* | | |
+
+Development-only tooling: `npm install` contacts the npm registry, and the integration tests run a **local** proxy on `127.0.0.1` that serves fixtures and refuses all other traffic. Neither ships to users.

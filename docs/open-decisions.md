@@ -89,6 +89,22 @@ Priority: **P0** blocks Phase 1, **P1** blocks Phase 2–4, **P2** is needed lat
 - **Trade-offs:** this decides which datasets can be bundled (D-8) and how reusable `core` is for third parties. Separate licences for code and data are possible.
 - **Recommendation:** discuss, as it is a product decision. A common pattern is **code under Apache-2.0 or MPL-2.0, with data under each dataset's own licence in a separate package.**
 
+**✅ APPROVED (owner, 2026-11-25): Apache-2.0 for project-owned code, documentation and data.** Applied in `LICENSE`, `NOTICE` and `package.json` (`"license": "Apache-2.0"`). Third-party material keeps its own licence and attribution (`THIRD_PARTY_NOTICES.md`), and Apache-2.0 does not override it. Options considered:
+
+| Option | Implications |
+|---|---|
+| **Apache-2.0** (recommended) | Permissive, so the engine can be reused, including commercially. Includes an explicit patent grant and requires a `NOTICE` file to be retained. Same licence as TypeScript; widely accepted by employers. |
+| MIT | Simplest permissive licence; no patent grant. |
+| MPL-2.0 | File-level copyleft: changes to Plaster's own files must stay open, while embedding stays easy. Same licence as the Public Suffix List. |
+| GPL-3.0 / AGPL-3.0 | Strong copyleft: derivatives must stay open and could bundle GPL tracker lists. Deters reuse of the engine. |
+| No licence | All rights reserved: the public can view the repository but not legally reuse it. Contradicts the "reusable component" goal. |
+
+**Third-party considerations for this release:**
+- Runtime dependencies: none. Development dependencies: TypeScript (Apache-2.0), esbuild (MIT) and `@types/*` (MIT). None is bundled into the extension.
+- Tracker seed: written for Plaster; vendor names are used descriptively.
+- Public-suffix subset: entries from the Public Suffix List (MPL-2.0), noted in the source.
+- Future third-party tracker lists may impose copyleft or non-commercial terms (D-8).
+
 ### D-18 · Test framework · P0
 - **Options:** `node:test` (no dependency; Node 22 can run TypeScript through type stripping) · Vitest.
 - **Recommendation:** **Vitest** for TypeScript ergonomics and snapshot support, which helps scoring fixtures. `node:test` is acceptable if we want zero dev dependencies.
@@ -98,3 +114,46 @@ The repository is currently `Differential_redirection`. Should it be renamed to 
 
 ### D-20 · User-facing wording and legal posture · P2
 Grading named websites carries reputational and legal risk (T-10). Wording guidelines need to be agreed (observational, not accusatory), along with a disclaimer and an error-report path. Consider getting legal input before a public release.
+
+---
+
+## Owner decisions recorded (2026-11-25)
+
+| Decision | Outcome |
+|---|---|
+| Q-4 Hard caps | ✅ Approved: C (69) for HTTP pages; F (39) for insecure password/payment submission. Initial judgement-based thresholds, not calibrated. |
+| Q-6 Unknown evidence | ✅ Approved: Tracking must be assessed and ≥ 75% of applicable category weight scored before a grade is shown; I-8 reworded |
+| Q-7 Methodology version | ✅ Approved: methodology 0.3.0; release version v0.1.0 |
+| D-17 Licence | ✅ Approved: Apache-2.0 for project-owned material; third-party licences unaffected |
+| Q-1, Q-2, Q-3, Q-5 and the sprint table below | Still open |
+
+## Provisional decisions taken during the MVP sprint (owner approval needed)
+
+These were taken to reach a demonstrable milestone. Each is easy to revisit, and none is recorded as an ADR until approved.
+
+| Decision | Provisional choice | Deviation from recommendation? | Why | Cost of reversing |
+|---|---|---|---|---|
+| D-1 Package manager | npm, single root `package.json`, no workspaces | **Yes** (recommended pnpm) | Fewer moving parts; npm was enough for 4 dev dependencies | Low |
+| D-2 Packages | `core`, `knowledge`, `apps/extension`; `discovery` not created | No | — | — |
+| D-3 Build tool | esbuild, hand-written manifest, unminified output | No | — | — |
+| D-4 UI framework | None (vanilla DOM, `textContent` only) | No | — | Low |
+| D-5 Browsers | Chromium only | **Yes** (recommended both) | Delivery time; Firefox listed as unverified | Medium (adapter work) |
+| D-6 Provenance | Two axes internally, four user-facing labels | No | — | — |
+| D-7 Policy analysis | Option (b): local keyword detection on policy pages the user opens; flags only | No | — | — |
+| D-8 Data sources | Own ~40-domain seed (no third-party licence) | n/a | Avoids licence questions for now | Low |
+| D-10 Storage | Nothing stored at all | Stricter than recommended | Simplest privacy story for the MVP | Low |
+| D-11 MAIN-world instrumentation | Not implemented | No | — | — |
+| D-12 Permissions | `activeTab` + `scripting` only; optional `webRequest` tier planned | No | — | — |
+| D-13 Presentation | Posture-only score; A/B/C/D/F; provisional at medium confidence, withheld at low; caps shown regardless | No | — | — |
+| D-14 DP | Informational only, score effect 0 | No | — | — |
+| D-16 Validation | Hand-written allow-list validator | No | — | — |
+| D-18 Tests | `node:test` + Node type stripping; Playwright from the environment for integration | **Yes** (recommended Vitest) | Zero test dependencies | Low |
+
+**New questions raised by the sprint:**
+- **Q-1:** Should Playwright become a pinned dev dependency, so integration tests run on any machine (currently they are skipped when it is unavailable)? This adds a large dev dependency.
+- **Q-2:** Should the 0.1 weights be reviewed by the owner before any public demo? They are judgement calls (`scoring-methodology.md` §1.8).
+- **Q-3:** Should the enhanced (`webRequest`) tier be Plaster's next capability, or Firefox parity?
+- **Q-4 · ✅ APPROVED (owner, 2026-11-25):** hard caps of **C (69)** for HTTP pages and **F (39)** for insecure password or payment submission. These are **initial, judgement-based thresholds, not empirically calibrated values**. Original question: approve the cap levels introduced in methodology 0.2.0: an HTTP page gives at most **C**, and an insecure password or payment field gives **F**. Alternatives: cap HTTP at D, or use no HTTP cap (relying on the transport category weight alone, which let an HTTP site score A).
+- **Q-6 · ✅ APPROVED (owner, 2026-11-25):** no grade unless the Tracking category is assessed and ≥ 75% of applicable category weight is scored; I-8 reworded accordingly. Plaster does not claim that removing unknown evidence can never increase the underlying numerical score. Tests verify the withholding behaviour (`REVIEW R8`, `Q-6` tests in `packages/core/test/assess.test.ts`). Original question: approve methodology 0.3.0's display gating (≥ 75% of category weight scored; tracking required) and reword invariant I-8 from "Unknown values never raise a score" to the achievable guarantee: "Unknown evidence is never credited; it lowers confidence; blind spots withhold the grade". Alternatives: (a) a pessimistic default for unknowns, which treats missing evidence as bad and breaks neutrality; (b) show a score *range* (worst to best case over unknowns), which is a new feature.
+- **Q-7 · ✅ APPROVED (owner, 2026-11-25):** methodology version **0.3.0**; the application/release version stays **v0.1.0**. Original question: approve the methodology version bump to **0.3.0** (scoring behaviour changed; see `scoring-methodology.md` §1.9).
+- **Q-5 (from the v0.1 review):** Should policy-claim scanning also be skipped on pages that contain account or credential fields (e.g. `/account/privacy` settings pages)? Currently only page-authored text is read and only flags are kept, so the residual risk is low.

@@ -8,3 +8,11 @@
 6. Don't add dependencies without justification. Prefer zero-dependency solutions in `core`.
 7. For decisions with security, privacy, maintenance or architectural consequences: present the options, trade-offs and a recommendation, and add them to `docs/open-decisions.md` instead of deciding silently.
 8. Use British English in documentation and user-facing text.
+9. Never run `git commit`, `git push` or history-rewriting commands; the project owner commits.
+
+## Commands
+- `npm run typecheck`: strict TypeScript for core, knowledge and extension
+- `npm test`: unit + static security tests (no browser needed)
+- `npm run test:integration`: builds the test extension and runs Chromium end-to-end tests (needs Playwright)
+- `npm run build:extension`: production build to `dist/extension`
+- `npm run demo:cli -- <snapshot.json>`: assess a snapshot from the command line

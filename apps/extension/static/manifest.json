@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Plaster: local privacy assessment",
+  "short_name": "Plaster",
+  "version": "0.1.0",
+  "description": "Find the gaps. Understand the risks. A local-first privacy assessment of the current page. Nothing leaves your device.",
+  "action": {
+    "default_title": "Assess this page with Plaster",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab", "scripting"],
+  "content_security_policy": {
+    "extension_pages": "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+  },
+  "minimum_chrome_version": "116"
+}

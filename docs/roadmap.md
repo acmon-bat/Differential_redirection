@@ -2,7 +2,22 @@
 
 Each phase has a clear goal, deliverables and exit criteria. Phases are sequential unless noted. Each one ends with a review of the invariants, the threat model and the open decisions.
 
-## Phase 0: Foundation *(current)*
+## Status at v0.1.0 (MVP sprint)
+
+| Phase | Status |
+|---|---|
+| 0 Foundation | Done |
+| 1 Core domain model | **Done** (npm + node:test instead of pnpm + Vitest; pending approval) |
+| 2 Capability spike | **Partial**: Chromium activeTab tier investigated and verified (`docs/browser-capabilities.md`); Firefox and the `webRequest` tier not yet done |
+| 3 Scoring | **Methodology 0.3.0 implemented and owner-approved (Q-4, Q-6, Q-7); uncalibrated**: no real-site fixture corpus yet |
+| 4 Extension MVP | **Done for Chromium**: zero-egress test passing |
+| 5 Personal information guidance | **Done** (rule-based v0.1) |
+| 6 Knowledge base | **Partial**: demonstration seed only |
+| 7–9 | Not started |
+
+The sprint brought forward parts of Phases 3–5 to reach a demonstrable milestone. Calibration (Phase 3 exit criterion) remains open.
+
+## Phase 0: Foundation
 
 **Goal:** agree on direction before writing product code.
 - Deliverables: README, architecture, threat model, local-first spec, scoring design, invariants, egress register, roadmap, open decisions.
@@ -32,7 +47,7 @@ Each phase has a clear goal, deliverables and exit criteria. Phases are sequenti
 - Normalisers `RawSignals → Evidence` using capability profiles.
 - Rule registry, category evaluation, aggregation, unknown handling, caps, confidence.
 - Fixture corpus and snapshot tests, plus calibration review.
-- **Exit:** methodology v0.1.0 is agreed, documented and reproducible on fixtures, and tests prove that unknown never raises a score.
+- **Exit:** the methodology is agreed, documented and reproducible on fixtures; unknown evidence is never credited; no grade is shown unless tracking is assessed and ≥ 75% of category weight is scored (approved Q-6). Plaster does not claim the numerical score can never rise when unknown evidence is excluded (`scoring-methodology.md` §1.6). Calibration against real sites is still outstanding.
 
 ## Phase 4: Extension MVP (local only)
 

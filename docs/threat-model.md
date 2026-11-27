@@ -52,7 +52,7 @@ The Plaster browser extension (Chromium and Firefox, MV3), the core engine, bund
 | T-12 | Malicious knowledge update, if an update channel exists | ADV-3, ADV-4 | A-5 | Prefer shipping data only through store releases (D-9). If a separate channel exists: signed data, data only (never code), schema-validated. |
 | T-13 | Permission over-reach makes Plaster a high-value target and erodes trust | ADV-4, systemic | A-1 | I-6. Optional and runtime host permissions (D-12). A justification for every permission. |
 | T-14 | Instrumenting page APIs (MAIN world) breaks sites or creates a fingerprint unique to Plaster users | ADV-1 | A-1, A-4 | Optional and off by default until evaluated (D-11). Minimal, non-mutating wrappers if used. Performance budget. |
-| T-15 | Differential privacy or another privacy-enhancing technology is claimed on weak evidence, inflating scores | ADV-7, ADV-1 | A-4 | S-8. DP signals isolated and capped (`scoring-methodology.md` §7). Disclosed-only evidence is labelled as such. |
+| T-15 | Differential privacy or another privacy-enhancing technology is claimed on weak evidence, inflating scores | ADV-7, ADV-1 | A-4 | S-8. DP signals are isolated and have no score effect in 0.x (`scoring-methodology.md` §1.4, D7). Disclosed-only evidence is labelled as such. |
 
 ## 6. Accepted limitations (to state publicly)
 
@@ -64,3 +64,21 @@ The Plaster browser extension (Chromium and Firefox, MV3), the core engine, bund
 ## 7. Review triggers
 
 Update this document when: a new permission is added; an egress component is added or changed; local storage of user data changes; MAIN-world instrumentation is enabled; a new data source is bundled; or the release pipeline changes.
+
+## 8. Mitigation status in v0.1.0
+
+| Threat | Implemented mitigation | Evidence |
+|---|---|---|
+| T-1 Plaster leaks browsing activity | No network code anywhere. Extension CSP `default-src 'none'; connect-src 'none'` for extension pages. **The content-script collector is not covered by the CSP**: static bans on direct and indirect request sinks plus runtime zero-egress tests. No storage. No background worker. | `tests/security/static.test.ts` (source and bundle scans, manifest). `tests/integration` (zero-egress with mutation check, CSP blocks fetch, image and beacon) |
+| T-2 Plaster reads form values | Collector reads attributes only. Label and policy text come from page-authored text nodes, skipping controls and `contenteditable`. Validator allow-lists fields and drops everything else. Static ban on `.value`, `FormData`, input listeners and `requestBody`. | Unit test injecting secrets into the snapshot. Integration tests typing secrets into a real page and a DP claim into a comment box |
+| T-3 Local history exposure | Nothing is persisted. The assessment lives only in the open popup. | Static ban on storage APIs; no `storage` permission |
+| T-4 Site games the assessment | **Partial:** confidence reflects partial visibility. "None observed" explanations carry caveats. | Unit tests on partial-visibility caveats |
+| T-5 Hostile page data | Validation with size and length bounds, strict origin parsing (no `URL` parser in core), rendering via `textContent` only. | Validation unit tests. Static ban on `innerHTML`-type sinks |
+| T-6 Spoofed messages | No messaging surface at all (no `runtime.onMessage`, no `externally_connectable`). | Static test |
+| T-8 Supply chain | Zero runtime dependencies. Four exactly pinned dev dependencies. Readable (unminified) bundles. | Static test on `package.json` |
+| T-9 False sense of safety | Low confidence withholds the grade. Unknown is never "safe". A "What Plaster could not see" section. The footer does not claim protection. | Unit tests on invariant I-8 |
+| T-13 Permission over-reach | `activeTab` + `scripting` only. | Static and integration manifest tests |
+| T-15 DP claimed on weak evidence | Evidence ladder. Vague wording is never DP. Score effect is 0. | `disclosures.test.ts` |
+| T-7, T-10, T-11, T-12, T-14 | Not yet addressed (features not built, or accepted limitations). | — |
+
+**New residual risk introduced by the MVP:** the **test build** carries an extra host permission and a test hook. Mitigation: it is built to a separate directory with "(TEST BUILD)" in its name, and a static test asserts that the production manifest equals the reviewed source manifest and that the production bundle contains no hook.

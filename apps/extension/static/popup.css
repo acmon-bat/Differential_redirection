@@ -1,0 +1,51 @@
+:root {
+  --bg: #ffffff; --fg: #1d2330; --muted: #5d6677; --line: #e3e6ec; --card: #f6f7f9;
+  --green: #1f8a4c; --amber: #b7791f; --red: #c53030; --grey: #9aa3b2; --accent: #2b5cad;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #161a21; --fg: #e6e9ef; --muted: #9aa3b2; --line: #2c323d; --card: #1e232c; --accent: #7aa2ff; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; width: 420px; max-height: 600px; font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--fg); }
+header { display: flex; align-items: baseline; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.brand { font-weight: 700; font-size: 16px; }
+.tagline, .muted { color: var(--muted); }
+.small { font-size: 11px; }
+main { padding: 10px 14px; }
+footer { padding: 8px 14px 12px; border-top: 1px solid var(--line); }
+footer p { margin: 2px 0; }
+h2 { font-size: 13px; margin: 16px 0 6px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.summary { display: flex; gap: 12px; align-items: center; background: var(--card); border-radius: 10px; padding: 10px; }
+.grade { width: 56px; height: 56px; border-radius: 12px; display: grid; place-items: center; font-size: 30px; font-weight: 800; color: #fff; background: var(--grey); flex: none; }
+.grade-A, .grade-B { background: var(--green); } .grade-C { background: var(--amber); } .grade-D, .grade-F { background: var(--red); }
+.origin { font-weight: 600; word-break: break-all; }
+.alert { margin-top: 8px; padding: 8px; border-radius: 8px; background: color-mix(in srgb, var(--red) 15%, transparent); border: 1px solid var(--red); }
+details { border: 1px solid var(--line); border-radius: 8px; margin: 6px 0; padding: 0 8px; }
+details > summary { cursor: pointer; padding: 6px 0; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+details[open] > summary { border-bottom: 1px solid var(--line); margin-bottom: 6px; }
+.light { width: 10px; height: 10px; border-radius: 50%; flex: none; background: var(--grey); }
+.light-green { background: var(--green); } .light-amber { background: var(--amber); } .light-red { background: var(--red); }
+.light-grey { background: transparent; border: 2px solid var(--grey); }
+/* Scored on limited evidence: outlined, not solid, so it does not read as verified. */
+.light-limited { background: transparent !important; border: 2px solid; }
+.light-limited.light-green { border-color: var(--green); } .light-limited.light-amber { border-color: var(--amber); } .light-limited.light-red { border-color: var(--red); }
+.cat-title { font-weight: 600; flex: 1; } .cat-score { font-variant-numeric: tabular-nums; }
+ul { margin: 4px 0; padding-left: 18px; }
+.checks { list-style: none; padding: 0; }
+.check { padding: 6px 0; border-bottom: 1px dashed var(--line); } .check:last-child { border-bottom: 0; }
+.check p { margin: 3px 0; }
+.outcome { display: inline-block; width: 16px; font-weight: 700; }
+.outcome-pass .outcome { color: var(--green); } .outcome-partial .outcome { color: var(--amber); }
+.outcome-fail .outcome { color: var(--red); } .outcome-unknown .outcome { color: var(--grey); }
+.recommendation { color: var(--accent); }
+.evidence { list-style: none; padding: 0; font-size: 11px; color: var(--muted); }
+.chip { display: inline-block; border-radius: 999px; padding: 0 6px; font-size: 10px; font-weight: 600; text-transform: uppercase; border: 1px solid currentColor; margin-left: 4px; }
+.chip-observed { color: var(--green); } .chip-cached { color: var(--accent); } .chip-disclosed { color: var(--amber); } .chip-unknown { color: var(--grey); }
+.pill { border-radius: 999px; padding: 1px 8px; font-size: 11px; font-weight: 600; color: #fff; }
+.pill-ok { background: var(--green); } .pill-caution { background: var(--amber); } .pill-prefer-alternative { background: #c05621; } .pill-avoid { background: var(--red); }
+.badge { font-size: 10px; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; color: var(--muted); }
+.tip { color: var(--accent); margin: 4px 0 8px; }
+.third-parties li { margin: 2px 0; }
+.raw pre { max-height: 220px; overflow: auto; font-size: 10px; background: var(--card); padding: 6px; border-radius: 6px; }
+.message { padding: 16px 0; }
