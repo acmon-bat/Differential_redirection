@@ -1,0 +1,29 @@
+{
+  "name": "plaster",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first privacy assessment engine and browser extension",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "typecheck": "tsc -p packages/core && tsc -p packages/knowledge && tsc -p apps/extension",
+    "test": "node --test \"packages/*/test/**/*.test.ts\" \"tests/security/**/*.test.ts\"",
+    "build:extension": "node scripts/build-extension.mjs",
+    "test:integration": "node scripts/build-extension.mjs --test && node --test \"tests/integration/**/*.test.mjs\"",
+    "demo:cli": "node scripts/assess-fixture.ts",
+    "check": "npm run typecheck && npm test && npm run test:integration"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.1.43",
+    "@types/node": "22.20.5",
+    "esbuild": "0.28.2",
+    "playwright": "1.65.1",
+    "typescript": "5.9.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}

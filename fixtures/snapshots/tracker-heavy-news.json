@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "page": { "origin": "https://news.example.com" },
+  "capabilities": {
+    "adapter": "fixture-full-visibility",
+    "signals": { "subresourceHosts": "available", "documentHeaders": "available", "cookies": "available", "forms": "available", "pageLinks": "available", "disclosures": "unavailable", "fingerprintingApis": "unavailable" },
+    "limitations": []
+  },
+  "window": { "coversPageLoad": true, "durationMs": 8000 },
+  "subresources": [
+    { "host": "static.example.com", "scheme": "https", "kind": "script", "count": 6 },
+    { "host": "securepubads.g.doubleclick.net", "scheme": "https", "kind": "script", "count": 12 },
+    { "host": "connect.facebook.net", "scheme": "https", "kind": "script", "count": 2 },
+    { "host": "static.hotjar.com", "scheme": "https", "kind": "script", "count": 3 },
+    { "host": "www.google-analytics.com", "scheme": "https", "kind": "beacon", "count": 5 },
+    { "host": "c.amazon-adsystem.com", "scheme": "https", "kind": "script", "count": 1 },
+    { "host": "cdn.taboola.com", "scheme": "https", "kind": "script", "count": 1 }
+  ],
+  "documentHeaders": { "strictTransportSecurity": true, "contentSecurityPolicy": false, "referrerPolicy": "no-referrer-when-downgrade", "permissionsPolicy": false },
+  "cookies": [
+    { "domain": "news.example.com", "secure": true, "httpOnly": false, "sameSite": "unspecified", "session": false, "lifetimeDays": 730 },
+    { "domain": ".doubleclick.net", "secure": true, "httpOnly": null, "sameSite": "none", "session": false, "lifetimeDays": 390 }
+  ],
+  "forms": [{ "actionOrigin": "https://news.example.com", "method": "post", "fieldKinds": ["email", "paymentCard", "name"] }],
+  "pageLinks": { "privacyPolicyLink": true }
+}

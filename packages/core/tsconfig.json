@@ -1,0 +1,11 @@
+{
+  // The core engine is compiled WITHOUT the DOM library and WITHOUT Node types.
+  // As a result `fetch`, `XMLHttpRequest`, `WebSocket`, `window`, `document`,
+  // `URL`, `chrome` and Node built-ins do not type-check here (Invariant S-5).
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": []
+  },
+  "include": ["src/**/*.ts"]
+}

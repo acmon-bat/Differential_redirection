@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "page": { "origin": "http://login.example.org" },
+  "capabilities": {
+    "adapter": "chromium-mv3-activetab",
+    "signals": { "subresourceHosts": "partial", "documentHeaders": "partial", "cookies": "unavailable", "forms": "available", "pageLinks": "available", "disclosures": "unavailable", "fingerprintingApis": "unavailable" },
+    "limitations": ["Third-party hosts come from the Resource Timing API: requests made inside iframes, by service workers or over WebSockets are not included."]
+  },
+  "window": { "coversPageLoad": true, "durationMs": 3000 },
+  "subresources": [{ "host": "login.example.org", "scheme": "http", "kind": "stylesheet", "count": 1 }],
+  "documentHeaders": { "strictTransportSecurity": null, "contentSecurityPolicy": null, "referrerPolicy": null, "permissionsPolicy": null },
+  "forms": [{ "actionOrigin": null, "method": "post", "fieldKinds": ["email", "password"] }],
+  "pageLinks": { "privacyPolicyLink": false }
+}

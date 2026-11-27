@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fixture Shop (Plaster integration test)</title>
+  <script src="/app.js"></script>
+  <!-- Known third parties from the bundled demo tracker list -->
+  <script src="http://static.hotjar.com/c/hotjar-123.js"></script>
+  <script src="http://connect.facebook.net/en_US/fbevents.js"></script>
+  <!-- An analytics beacon whose QUERY STRING carries an identifier. Plaster must keep only the host. -->
+  <img alt="" width="1" height="1" src="http://www.google-analytics.com/collect?v=1&cid=QUERY-STRING-IDENTIFIER-42">
+  <!-- An unknown third party -->
+  <img alt="" width="1" height="1" src="http://pixel.unlisted-vendor.example/p.gif">
+</head>
+<body>
+  <h1>Fixture Shop</h1>
+  <form id="login" method="post">
+    <label for="email">Email address</label> <input id="email" name="email" type="email" autocomplete="email">
+    <label for="pw">Password</label> <input id="pw" name="password" type="password" autocomplete="current-password">
+    <button type="submit">Sign in</button>
+  </form>
+  <form id="checkout" method="post" action="https://payments.pay-provider.example/charge">
+    <input name="cardnumber" autocomplete="cc-number" placeholder="Card number">
+    <input name="fullname" autocomplete="name" placeholder="Name on card">
+  </form>
+  <input id="search" name="q" type="search" placeholder="Search">
+  <footer><a href="/privacy">Privacy policy</a></footer>
+</body>
+</html>
